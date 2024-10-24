@@ -17,7 +17,7 @@ public class EmployeeController {
 
  @GetMapping("employee/{id}")
   public Employee getEmployeeDetail(@PathVariable("id") int id) {
-   log.info("id: {}", id);
+   System.out.println("id:"+id);
    return employeeService.getEmployeeDetail(id);
  }
 }

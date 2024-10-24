@@ -27,7 +27,7 @@ public class TraceIdFilter extends OncePerRequestFilter {
       .map(span -> span.context().traceId())
       .orElse("UNKNOWN");
     response.addHeader("TraceId", traceId);
-    log.info("Trace ID: {}", traceId);
+    System.out.println("Trace ID: {}"+traceId);
     filterChain.doFilter(request, response);
   }
 }
