@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="jsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp/>
+                <pattern>
+                    <pattern>
+                        {
+                        "level": "%p",
+                        "thread": "%thread",
+                        "TraceId": "%X{traceId:-}",
+                        "SpanId": "%X{spanId:-}",
+                        "class": "%logger{100}",
+                        "message": "TraceId: %X{traceId:-}, SpanId: %X{spanId:-}, %m"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+    <appender name="ASYNC_CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <appender-ref ref="jsonConsoleAppender"/>
+        <queueSize>500</queueSize>
+        <includeCallerData>false</includeCallerData>
+        <neverBlock>true</neverBlock>
+    </appender>
+    <logger name="org.springframework.web" level="INFO"/>
+    <!-- without this line nothing will be printed to the console -->
+    <logger name="org.springframework.web" level="INFO"/>
+    <logger name="org.apache" level="INFO"/> <!-- SECURITY -->
+    <logger name="httpclient" level="INFO"/>
+    <logger name="jsonLogger" additivity="false" level="INFO">
+        <appender-ref ref="jsonConsoleAppender"/>
+        <appender-ref ref="ASYNC_CONSOLE"/>
+    </logger>
+    <root level="INFO">
+        <appender-ref ref="ASYNC_CONSOLE"/>
+    </root>
+</configuration>
